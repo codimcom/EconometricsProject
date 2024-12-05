@@ -1,13 +1,9 @@
-#install.packages("haven")
-#install.packages("tidyverse")
-
 library(haven)
 library(tidyverse)
 library(modelsummary)
 library(fixest)
 library(ggplot2)
 getwd()
-setwd("~/Downloads")
 
 data <- read_sav("r32iall_71_1.sav")
 datal <- select(data, bb_age, bbh5, bbl5.1, 
@@ -25,14 +21,7 @@ y <- mutate(y, bbj8_year = bbj8*12)
 summary(y)
 
 #удаление выбросов
-y <- y %>%
-  filter(#bbl90 >= quantile(bbl90, 0.25) - 1.5 * IQR(bbl90),
-         bbl90 <= quantile(bbl90, 0.75) + 1.5 * IQR(bbl90))
-#y <- y %>%
-#  filter(bbj8 >= quantile(bbj8, 0.25) - 1.5 * IQR(bbj8),
-#    bbj8 <= quantile(bbj8, 0.75) + 1.5 * IQR(bbj8))
-
-
+y <- y %>% filter(bbl90 <= quantile(bbl90, 0.75) + 1.5 * IQR(bbl90))
 
 
 #boxplots
